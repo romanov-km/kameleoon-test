@@ -1,0 +1,30 @@
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid #d0d0d0;
+    background: #fafafa;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.item:hover {
+    background: #f0f0f0;
+}
+
+.checkbox {
+    cursor: pointer;
+}
+
+.label {
+    white-space: nowrap;
+}
