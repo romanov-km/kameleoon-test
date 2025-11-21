@@ -1,22 +1,70 @@
 .wrapper {
     display: inline-flex;
-    gap: 4px;
+    align-items: center;
+    gap: 8px;
 }
 
-.iconButton {
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    border: 1px solid #d0d0d0;
+.iconBase {
+    border-radius: 10px;
+    border: 1px solid #d4d3de;
     background: #ffffff;
+    color: #535260;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.iconBase:hover {
+    background: #f7f7fc;
+}
+
+.fullscreen {
+    composes: iconBase;
+    width: 32px;
+    height: 32px;
     font-size: 14px;
-    line-height: 1;
+}
+
+/* капсула с минус/плюс */
+
+.zoomGroup {
+    display: inline-flex;
+    border-radius: 10px;
+    border: 1px solid #d4d3de;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.zoomBtn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: #535260;
+    cursor: pointer;
+    font-size: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-.iconButton:hover {
-    background: #fafafa;
+.zoomBtn:hover {
+    background: #f7f7fc;
+}
+
+.zoomPlus {
+    border-left: 1px solid #e0dfea;
+}
+
+/* круглая reset */
+
+.reset {
+    composes: iconBase;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 14px;
+    border: 0px;
 }

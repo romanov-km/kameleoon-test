@@ -1,5 +1,8 @@
 import type { TooltipContentProps } from "recharts";
-import type { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
+import type {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 import type { Variation } from "@/types/abTest";
 import { formatPercent } from "@/utils/formatters";
 import styles from "./CustomTooltip.module.css";
@@ -15,25 +18,57 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = (props) => {
     return null;
   }
 
-  // payload[0].payload содержит весь объект точки
   const point = payload[0].payload as Record<string, unknown>;
+  const dateText =
+    (point.dateFull as string | undefined) ||
+    (label as string | undefined) ||
+    "";
+
+  // определяем лучшую вариацию по значению в этой точке
+  let bestId: string | null = null;
+  let bestValue = -Infinity;
+
+  for (const variation of variations) {
+    const raw = point[variation.id] as number | null | undefined;
+    if (raw != null && !Number.isNaN(raw) && raw > bestValue) {
+      bestValue = raw;
+      bestId = variation.id;
+    }
+  }
 
   return (
     <div className={styles.tooltip}>
-      <div className={styles.tooltipHeader}>{label}</div>
-      <div className={styles.tooltipBody}>
+      <div className={styles.header}>
+        <div className={styles.calendarIcon} />
+        <span className={styles.date}>{dateText}</span>
+      </div>
+
+      <div className={styles.divider} />
+
+      <div className={styles.rows}>
         {variations.map((variation) => {
           const value = point[variation.id] as number | null | undefined;
 
-          // Ищем цвет линии из payload
           const plItem = payload.find((p) => p.dataKey === variation.id);
-          const color = plItem?.color;
+          const color = plItem?.color || "#999999";
+
+          const isBest = bestId === variation.id;
 
           return (
-            <div key={variation.id} className={styles.tooltipRow}>
-              <span className={styles.legendDot} style={{ backgroundColor: color }} />
-              <span className={styles.variationName}>{variation.name}:</span>
-              <span className={styles.value}>{formatPercent(value)}</span>
+            <div key={variation.id} className={styles.row}>
+              <div className={styles.left}>
+                <span
+                  className={styles.dot}
+                  style={{ backgroundColor: color }}
+                />
+                <span className={styles.variationName}>{variation.name}</span>
+                {isBest && (
+                  <span className={styles.trophy} title="Best variation">
+                    🏆
+                  </span>
+                )}
+              </div>
+              <div className={styles.value}>{formatPercent(value, 2)}</div>
             </div>
           );
         })}

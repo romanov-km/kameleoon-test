@@ -1,41 +1,107 @@
 .tooltip {
     background: #ffffff;
-    border: 1px solid #e0e0e0;
-    padding: 8px 12px;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    padding: 12px 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+    border: 1px solid #f0f0f0;
+    min-width: 220px;
+    max-width: 260px;
     font-size: 12px;
+    color: #424242;
 }
 
-.tooltipHeader {
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.tooltipBody {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.tooltipRow {
+.header {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
+    margin-bottom: 8px;
 }
 
-.legendDot {
-    width: 8px;
-    height: 8px;
+.calendarIcon {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    background: #616161;
+    position: relative;
+}
+
+.calendarIcon::before,
+.calendarIcon::after {
+    content: "";
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    height: 2px;
+    background: #ffffff;
+    border-radius: 1px;
+}
+
+.calendarIcon::before {
+    top: 3px;
+}
+
+.calendarIcon::after {
+    top: 7px;
+}
+
+.date {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.divider {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 6px 0 4px;
+}
+
+.rows {
+    display: flex;
+    flex-direction: column;
+    max-height: 140px;
+    overflow-y: auto;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-top: 1px dashed #e0e0e0;
+}
+
+.row:first-of-type {
+    border-top: 1px dashed transparent;
+}
+
+.left {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     flex-shrink: 0;
 }
 
 .variationName {
+    font-size: 12px;
+    color: #333333;
     white-space: nowrap;
 }
 
+.trophy {
+    margin-left: 4px;
+    font-size: 13px;
+}
+
 .value {
-    margin-left: auto;
     font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: #424242;
+    margin-left: 8px;
 }

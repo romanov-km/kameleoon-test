@@ -16,7 +16,7 @@ const prepared = prepareAbTestData(rawData as RawData);
 
 function App() {
   const [period, setPeriod] = useState<Period>("day");
-  const [lineStyle, setLineStyle] = useState<LineStyle>("line");
+  const [lineStyle, setLineStyle] = useState<LineStyle>("smooth");
   const [selectedVariations, setSelectedVariations] = useState<string[]>(() =>
     prepared.variations.map((v) => v.id)
   );
@@ -115,7 +115,7 @@ function App() {
   };
 
   return (
-    <div className={styles.app}>
+    <div className={`${styles.app} ${fullscreen ? styles.appFullscreen : ""}`}>
       <div
         className={`${styles.container} ${
           fullscreen ? styles.containerFullscreen : ""

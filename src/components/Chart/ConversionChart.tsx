@@ -1,5 +1,4 @@
-// src/components/Chart/ConversionChart.tsx
-
+import React from "react";
 import {
   LineChart,
   Line,
@@ -7,13 +6,16 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
-  Legend,
   ResponsiveContainer,
   AreaChart,
   Area,
 } from "recharts";
 import type { ChartPoint, Variation } from "@/types/abTest";
-import { formatPercent } from "@/utils/formatters";
+import {
+  formatDateShort,
+  formatPercent,
+  formatTooltipDate,
+} from "@/utils/formatters";
 import styles from "./ConversionChart.module.css";
 import { CustomTooltip } from "./CustomTooltip";
 import type { LineStyle } from "@/components/Controls/LineStyleSelector";
@@ -28,7 +30,8 @@ interface ConversionChartProps {
 function buildRechartsData(points: ChartPoint[], variations: Variation[]) {
   return points.map((point) => {
     const entry: Record<string, unknown> = {
-      dateLabel: point.dateLabel || point.date.toISOString().slice(0, 10),
+      dateLabel: formatDateShort(point.date),
+      dateFull: formatTooltipDate(point.date),
     };
 
     for (const variation of variations) {
@@ -73,12 +76,11 @@ function getYDomain(
 }
 
 const DEFAULT_COLORS = [
-  "#3366FF",
-  "#FF6633",
-  "#22AA99",
-  "#FF6633",
-  "#AA3377",
-  "#0099C6",
+  "#4142EF",
+  "#46464F",
+  "#FF8346",
+  "#DF57BC",
+  "#35BDAD"
 ];
 
 export const ConversionChart: React.FC<ConversionChartProps> = ({
@@ -98,13 +100,15 @@ export const ConversionChart: React.FC<ConversionChartProps> = ({
         tickFormatter={(value) => formatPercent(value as number, 0)}
       />
       <Tooltip
-        content={(props) => (<CustomTooltip {...props} variations={variations} />)}
+        content={(props) => (
+          <CustomTooltip {...props} variations={variations} />
+        )}
         cursor={{ stroke: "#bdbdbd", strokeWidth: 1 }}
       />
-      <Legend />
     </>
   );
 
+  // 3-й ряд на макете - Area
   if (lineStyle === "area") {
     return (
       <div className={styles.chartWrapper}>
@@ -134,7 +138,57 @@ export const ConversionChart: React.FC<ConversionChartProps> = ({
     );
   }
 
-  const lineType = lineStyle === "smooth" ? "monotone" : "linear";
+  // 4-й ряд на макете - Highlight: толстая прозрачная + тонкая линия
+  if (lineStyle === "highlight") {
+    return (
+      <div className={styles.chartWrapper}>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={chartData}
+            margin={{ top: 16, right: 24, bottom: 16, left: 8 }}
+          >
+            {commonAxes}
+            {variations.map((variation, index) => {
+              const color = DEFAULT_COLORS[index % DEFAULT_COLORS.length];
+
+              return (
+                <React.Fragment key={variation.id}>
+                  <Line
+                    type="monotone"
+                    dataKey={variation.id}
+                    name={variation.name}
+                    dot={false}
+                    strokeWidth={20}
+                    stroke={color}
+                    strokeOpacity={0.2}
+                    connectNulls={false}
+                    isAnimationActive={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey={variation.id}
+                    name={variation.name}
+                    dot={false}
+                    strokeWidth={2}
+                    stroke={color}
+                    connectNulls={false}
+                  />
+                </React.Fragment>
+              );
+            })}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  }
+
+  // 1-й и 2-й ряды: smooth и linear
+  const type: "linear" | "monotone" | "basis" =
+    lineStyle === "linear"
+      ? "linear"
+      : "smooth"
+      ? "basis" // более плавная кривая для Smooth
+      : "monotone";
 
   return (
     <div className={styles.chartWrapper}>
@@ -147,7 +201,7 @@ export const ConversionChart: React.FC<ConversionChartProps> = ({
           {variations.map((variation, index) => (
             <Line
               key={variation.id}
-              type={lineType}
+              type={type}
               dataKey={variation.id}
               name={variation.name}
               dot={false}

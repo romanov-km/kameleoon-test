@@ -17,31 +17,35 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
     <div className={styles.wrapper}>
       <button
         type="button"
-        className={styles.iconButton}
+        className={styles.fullscreen}
         onClick={onToggleFullscreen}
         title="Fullscreen"
       >
-        ⤢
+        ⛶
       </button>
+
+      <div className={styles.zoomGroup}>
+        <button
+          type="button"
+          className={`${styles.zoomBtn} ${styles.zoomMinus}`}
+          onClick={onZoomOut}
+          title="Zoom out"
+        >
+          −
+        </button>
+        <button
+          type="button"
+          className={`${styles.zoomBtn} ${styles.zoomPlus}`}
+          onClick={onZoomIn}
+          title="Zoom in"
+        >
+          +
+        </button>
+      </div>
+
       <button
         type="button"
-        className={styles.iconButton}
-        onClick={onZoomOut}
-        title="Zoom out"
-      >
-        −
-      </button>
-      <button
-        type="button"
-        className={styles.iconButton}
-        onClick={onZoomIn}
-        title="Zoom in"
-      >
-        +
-      </button>
-      <button
-        type="button"
-        className={styles.iconButton}
+        className={styles.reset}
         onClick={onReset}
         title="Reset zoom"
       >
