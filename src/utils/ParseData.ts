@@ -10,7 +10,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 
 // Нормализация списка вариаций
 function normalizeVariations(raw: RawData): Variation[] {
-  return raw.variations.map((v, index) => {
+  return raw.variations.map((v) => {
     // В data.json у Original нет id, а в visits/conversions он под ключом "0"
     const id = v.id !== undefined ? String(v.id) : "0";
 

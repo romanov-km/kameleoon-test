@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import rawData from "@/assets/data.json";
 import { prepareAbTestData } from "@/utils/parseData";
-import type { RawData } from "@/types/abTest";
+import type { RawData, Variation } from "@/types/abTest";
 import { ConversionChart } from "@/components/Chart/ConversionChart";
 import { VariationSelector } from "@/components/Controls/VariationSelector";
 import { PeriodToggle, type Period } from "@/components/Controls/PeriodToggle";
@@ -20,7 +20,7 @@ function App() {
   const [period, setPeriod] = useState<Period>("day");
   const [lineStyle, setLineStyle] = useState<LineStyle>("smooth");
   const [selectedVariations, setSelectedVariations] = useState<string[]>(() =>
-    prepared.variations.map((v) => v.id)
+    prepared.variations.map((v: Variation) => v.id)
   );
   const [xRange, setXRange] = useState<[number, number] | null>(null);
   const [fullscreen, setFullscreen] = useState(false);
@@ -42,7 +42,7 @@ function App() {
   }, [basePoints, xRange]);
 
   const visibleVariations = useMemo(
-    () => prepared.variations.filter((v) => selectedVariations.includes(v.id)),
+    () => prepared.variations.filter((v: Variation) => selectedVariations.includes(v.id)),
     [selectedVariations]
   );
 

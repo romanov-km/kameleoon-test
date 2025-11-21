@@ -202,7 +202,7 @@ export const ConversionChart: React.FC<ConversionChartProps> = ({
   const type: "linear" | "monotone" | "basis" =
     lineStyle === "linear"
       ? "linear"
-      : "smooth"
+      : lineStyle === "smooth"
       ? "basis" // более плавная кривая для Smooth
       : "monotone";
 
