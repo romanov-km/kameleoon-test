@@ -5,9 +5,10 @@ import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: "/kameleoon-test/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
     }
-  }
+  },
 })
