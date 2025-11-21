@@ -1,0 +1,30 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid #d4d3de;
+    background: #ffffff;
+    color: #33343b;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: #f7f7fc;
+}
+
+.buttonDark {
+    background: #303134;
+    color: #f5f5f5;
+    border-color: #5f6368;
+}
+
+.icon {
+    font-size: 14px;
+}
+
+.label {
+    line-height: 1;
+}

@@ -68,3 +68,21 @@
     font-size: 14px;
     border: 0px;
 }
+
+.export {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid #d4d3de;
+    background: #ffffff;
+    color: #535260;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.export:hover {
+    background: #f7f7fc;
+}

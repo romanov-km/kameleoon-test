@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import rawData from "@/assets/data.json";
 import { prepareAbTestData } from "@/utils/parseData";
 import type { RawData } from "@/types/abTest";
@@ -11,6 +11,8 @@ import {
 } from "@/components/Controls/LineStyleSelector";
 import { ZoomControls } from "@/components/Controls/ZoomControls";
 import styles from "./App.module.css";
+import { ThemeToggle, type Theme } from "@/components/Controls/ThemeToggle";
+import * as htmlToImage from "html-to-image";
 
 const prepared = prepareAbTestData(rawData as RawData);
 
@@ -22,6 +24,9 @@ function App() {
   );
   const [xRange, setXRange] = useState<[number, number] | null>(null);
   const [fullscreen, setFullscreen] = useState(false);
+  const [theme, setTheme] = useState<Theme>("light");
+
+  const chartRef = useRef<HTMLDivElement | null>(null);
 
   const basePoints = useMemo(
     () => (period === "day" ? prepared.dailyPoints : prepared.weeklyPoints),
@@ -40,6 +45,24 @@ function App() {
     () => prepared.variations.filter((v) => selectedVariations.includes(v.id)),
     [selectedVariations]
   );
+
+  const handleExportPng = async () => {
+    if (!chartRef.current) return;
+  
+    try {
+      const dataUrl = await htmlToImage.toPng(chartRef.current, {
+        backgroundColor: theme === "dark" ? "#303134" : "#ffffff",
+      });
+  
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = `conversion-chart-${period}.png`;
+      link.click();
+    } catch (e) {
+      // можно вывести console.error, но для тестового достаточно тихо
+      console.error("Export failed", e);
+    }
+  };
 
   // zoom helpers
   const resetZoom = () => setXRange(null);
@@ -131,21 +154,24 @@ function App() {
             <PeriodToggle value={period} onChange={handlePeriodChange} />
           </div>
           <div className={styles.topRight}>
+            <ThemeToggle value={theme} onChange={setTheme} />
             <LineStyleSelector value={lineStyle} onChange={setLineStyle} />
             <ZoomControls
               onZoomIn={zoomIn}
               onZoomOut={zoomOut}
               onReset={resetZoom}
               onToggleFullscreen={toggleFullscreen}
+              onExport={handleExportPng}
             />
           </div>
         </div>
 
-        <div className={styles.chartSection}>
+        <div ref={chartRef} className={styles.chartSection}>
           <ConversionChart
             points={chartPoints}
             variations={visibleVariations}
             lineStyle={lineStyle}
+            theme={theme}
           />
         </div>
       </div>

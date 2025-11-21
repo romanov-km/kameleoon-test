@@ -19,11 +19,13 @@ import {
 import styles from "./ConversionChart.module.css";
 import { CustomTooltip } from "./CustomTooltip";
 import type { LineStyle } from "@/components/Controls/LineStyleSelector";
+import type { Theme } from "../Controls/ThemeToggle";
 
 interface ConversionChartProps {
   points: ChartPoint[];
   variations: Variation[];
   lineStyle: LineStyle;
+  theme: Theme;
 }
 
 // преобразование ChartPoint в формат Recharts
@@ -75,35 +77,43 @@ function getYDomain(
   return [domainMin, domainMax];
 }
 
-const DEFAULT_COLORS = [
-  "#4142EF",
-  "#46464F",
-  "#FF8346",
-  "#DF57BC",
-  "#35BDAD"
-];
+const DEFAULT_COLORS = ["#4142EF", "#46464F", "#FF8346", "#DF57BC", "#35BDAD"];
 
 export const ConversionChart: React.FC<ConversionChartProps> = ({
   points,
   variations,
   lineStyle,
+  theme,
 }) => {
   const chartData = buildRechartsData(points, variations);
   const [yMin, yMax] = getYDomain(points, variations);
 
+  const isDark = theme === "dark";
+  const background = isDark ? "#05082c" : "#ffffff";
+  const axisColor = isDark ? "#e8eaed" : "#424242";
+  const gridColor = isDark ? "#555555" : "#dddddd";
+
   const commonAxes = (
     <>
-      <CartesianGrid strokeDasharray="4 4" />
-      <XAxis dataKey="dateLabel" />
+      <CartesianGrid strokeDasharray="4 4" stroke={gridColor} />
+      <XAxis
+        dataKey="dateLabel"
+        tick={{ fill: axisColor }}
+        axisLine={{ stroke: axisColor }}
+        tickLine={{ stroke: axisColor }}
+      />
       <YAxis
         domain={[yMin, yMax]}
         tickFormatter={(value) => formatPercent(value as number, 0)}
+        tick={{ fill: axisColor }}
+        axisLine={{ stroke: axisColor }}
+        tickLine={{ stroke: axisColor }}
       />
       <Tooltip
         content={(props) => (
           <CustomTooltip {...props} variations={variations} />
         )}
-        cursor={{ stroke: "#bdbdbd", strokeWidth: 1 }}
+        cursor={{ stroke: isDark ? "#9e9e9e" : "#bdbdbd", strokeWidth: 1 }}
       />
     </>
   );
@@ -111,7 +121,10 @@ export const ConversionChart: React.FC<ConversionChartProps> = ({
   // 3-й ряд на макете - Area
   if (lineStyle === "area") {
     return (
-      <div className={styles.chartWrapper}>
+      <div
+        className={styles.chartWrapper}
+        style={{ backgroundColor: background }}
+      >
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={chartData}
@@ -141,7 +154,10 @@ export const ConversionChart: React.FC<ConversionChartProps> = ({
   // 4-й ряд на макете - Highlight: толстая прозрачная + тонкая линия
   if (lineStyle === "highlight") {
     return (
-      <div className={styles.chartWrapper}>
+      <div
+        className={styles.chartWrapper}
+        style={{ backgroundColor: background }}
+      >
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
             data={chartData}
@@ -191,7 +207,10 @@ export const ConversionChart: React.FC<ConversionChartProps> = ({
       : "monotone";
 
   return (
-    <div className={styles.chartWrapper}>
+    <div
+      className={styles.chartWrapper}
+      style={{ backgroundColor: background }}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={chartData}

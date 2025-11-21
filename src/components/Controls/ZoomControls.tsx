@@ -5,6 +5,7 @@ interface ZoomControlsProps {
   onZoomOut: () => void;
   onReset: () => void;
   onToggleFullscreen?: () => void;
+  onExport: () => void;
 }
 
 export const ZoomControls: React.FC<ZoomControlsProps> = ({
@@ -12,6 +13,7 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
   onZoomOut,
   onReset,
   onToggleFullscreen,
+  onExport
 }) => {
   return (
     <div className={styles.wrapper}>
@@ -51,6 +53,16 @@ export const ZoomControls: React.FC<ZoomControlsProps> = ({
       >
         ↻
       </button>
+      {onExport && (
+        <button
+          type="button"
+          className={styles.export}
+          onClick={onExport}
+          title="Export PNG"
+        >
+          ⬇︎
+        </button>
+      )}
     </div>
   );
 };
