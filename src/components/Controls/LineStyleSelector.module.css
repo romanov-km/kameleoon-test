@@ -1,5 +1,12 @@
 .wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     font-size: 12px;
+}
+
+.label {
+    color: #555555;
 }
 
 .selectWrapper {
@@ -10,16 +17,12 @@
 
 .select {
     appearance: none;
-    padding: 6px 20px 6px 10px;
+    padding: 4px 20px 4px 10px;
     border-radius: 4px;
     border: 1px solid #d0d0d0;
+    font-size: 12px;
     background: #ffffff;
     cursor: pointer;
-    min-width: 80px;
-}
-
-.select:hover {
-    background: #fafafa;
 }
 
 .chevron {

@@ -13,24 +13,17 @@ export const PeriodToggle: React.FC<PeriodToggleProps> = ({
 }) => {
   return (
     <div className={styles.wrapper}>
-      <button
-        type="button"
-        className={`${styles.button} ${
-          value === "day" ? styles.buttonActive : ""
-        }`}
-        onClick={() => onChange("day")}
-      >
-        Day
-      </button>
-      <button
-        type="button"
-        className={`${styles.button} ${
-          value === "week" ? styles.buttonActive : ""
-        }`}
-        onClick={() => onChange("week")}
-      >
-        Week
-      </button>
+      <div className={styles.selectWrapper}>
+        <select
+          className={styles.select}
+          value={value}
+          onChange={(e) => onChange(e.target.value as Period)}
+        >
+          <option value="day">Day</option>
+          <option value="week">Week</option>
+        </select>
+        <span className={styles.chevron}>▾</span>
+      </div>
     </div>
   );
 };
